@@ -1,4 +1,4 @@
-example_grid = [['X', 'X', ' '], ['O', 'X', 'O'], ['O', ' ', ' ']]
+import os
 
 class TicTacToe():
     def __init__(self):
@@ -71,7 +71,11 @@ class TicTacToe():
         
         return True
     
-    def printValidMoves(self):
+
+
+    def printBoardAndMoves(self):
+        
+
         validMoves = []
 
         for i, row in enumerate(self.board):
@@ -80,11 +84,15 @@ class TicTacToe():
                 validMovesRow.append('_' if cell != ' ' else f"{(i * 3) + j + 1}")
             validMoves.append(validMovesRow)
 
-        print('valid moves: ')        
-        for i, row in enumerate(validMoves):
+        print(f"  BOARD {' ' * 30}  VALID MOVES")
+
+        for i in range(3):
             if i > 0:
-                print(' ' * 30, '━━╋━━━╋━━')
-            print(' ' * 30, ' ┃ '.join(row))
+                print(f"{'━━╋━━━╋━━'} {' ' * 30} {'━━╋━━━╋━━'}")
+            print(' ┃ '.join(self.board[i]), ' ' * 30, ' ┃ '.join(validMoves[i]))
+        
+
+
 
 
 
@@ -99,23 +107,31 @@ class TicTacToe():
             move = None
             while not self.checkMove(move):
                 try:
-                    self.printValidMoves()
+                    os.system('clear')
+                    self.printBoardAndMoves()
+                    print()
                     move = (int(input(f"Player {self.currentPlayer}, please select a move: "))) - 1
                 except ValueError as e:
                     print(e)
             
             self.placeMarker(move)
-            self.printBoard()
+            os.system('clear')
+            self.printBoardAndMoves()
+
             self.changePlayer()
 
 
-        stalemate = self.checkStalemate()
-        winner = self.getWinningPlayer()
+            stalemate = self.checkStalemate()
+            winner = self.getWinningPlayer()
 
-        if winner:
-            print(f"{winner} has won!")
-        else:
-            print('Stalemate')
+            if winner:
+                print(f"{winner} has won!")
+                return
+            elif stalemate:
+                print('Stalemate')
+                return
+            else:
+                continue
 
 
 def main():
