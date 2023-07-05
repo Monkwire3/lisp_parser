@@ -2,7 +2,7 @@ example_grid = [['X', 'X', ' '], ['O', 'X', 'O'], ['O', ' ', ' ']]
 
 class TicTacToe():
     def __init__(self):
-        self.board = [[' '] * 3] * 3
+        self.board = [[' ' for _ in range(3)] for _ in range(3)]
         self.currentPlayer = 'X'
     
     def printBoard(self):
@@ -15,7 +15,7 @@ class TicTacToe():
         self.currentPlayer = 'O' if self.currentPlayer == 'X' else 'X'
 
     def placeMarker(self, cell):
-        self.currentBoard[(cell // 3) % 9][cell % 3] = self.currentPlayer
+        self.board[((cell) // 3) % 9][(cell) % 3] = self.currentPlayer
     
     def getWinningPlayer(self):
 
@@ -37,7 +37,7 @@ class TicTacToe():
             row = []
             col = []
 
-            for j in range(3[i]):
+            for j in range(3):
                 row.append(self.board[i][j])
                 col.append(self.board[j][i])
             
@@ -58,10 +58,89 @@ class TicTacToe():
         return None
     
     def checkMove(self, move):
+        if move is None:
+            return move
+
         return self.board[(move // 3) % 9][move % 3] == ' '
     
-    def playTurn(self):
-        move = input(f"Player {self.currentPlayer}, please select a move: ")
+    def checkStalemate(self):
+        for row in self.board:
+            for cell in row:
+                if cell == ' ':
+                    return False
+        
+        return True
+    
+    def printValidMoves(self):
+        validMoves = []
+
+        for i, row in enumerate(self.board):
+            validMovesRow = []
+            for j, cell in enumerate(row):
+                validMovesRow.append('_' if cell != ' ' else f"{(i * 3) + j + 1}")
+            validMoves.append(validMovesRow)
+
+        print('valid moves: ')        
+        for i, row in enumerate(validMoves):
+            if i > 0:
+                print(' ' * 30, '━━╋━━━╋━━')
+            print(' ' * 30, ' ┃ '.join(row))
+
+
+
+
+
+   
+    def playGame(self):
+        stalemate = False
+        winner = False
+
+        while not stalemate and not winner:
+            move = None
+            while not self.checkMove(move):
+                try:
+                    self.printValidMoves()
+                    move = (int(input(f"Player {self.currentPlayer}, please select a move: "))) - 1
+                except ValueError as e:
+                    print(e)
+            
+            self.placeMarker(move)
+            self.printBoard()
+            self.changePlayer()
+
+
+        stalemate = self.checkStalemate()
+        winner = self.getWinningPlayer()
+
+        if winner:
+            print(f"{winner} has won!")
+        else:
+            print('Stalemate')
+
+
+def main():
+    game = TicTacToe()
+    game.playGame()
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        
+
+
+
 
 
 
