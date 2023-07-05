@@ -70,7 +70,7 @@ def main():
     lispParserTestCases = [
         ["(first (list 1 (+ 2 3) 9))", ["first", ["list", 1, ["+", 2, 3], 9]]],
         ["(reduce #'- (reverse (list 1 2 3)))", ['reduce', "#'-", ['reverse', ['list', 1, 2, 3]]]],
-        ["(mapcar #' string-downcase (list 'Hello' 'world!'))", ['mapcar', "#'", 'string-downcase', ['list', "'Hello'", "'world!'"]]]
+        ["(mapcar #' string-downcase (list 'Hello' 'world!'))", ['mapcar', "#'", 'string-downcase', ['list', "'Hello'", "'world!'"]]], ["(first (list 1 (+ 2 3) (* 3 3)))", ['first', ['list', 1, ['+', 2, 3], ['*', 3, 3]]]]
     ]
 
     tokenizeTestCases = [
